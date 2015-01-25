@@ -1,12 +1,12 @@
 package org.craftedsw.tripservicekata.trip
 
-import org.craftedsw.tripservicekata.user.{UserSession, User}
+import org.craftedsw.tripservicekata.user.User
 import org.craftedsw.tripservicekata.exception.UserNotLoggedInException
 
-class TripService(tripDAO: ITripDAO = TripDAO, userSession: IUserSession = UserSession) {
+class TripService(tripDAO: ITripDAO = TripDAO) {
 
-	def getTripsByUser(user: User): List[Trip] = {
-		userSession.getLoggedUser() match {
+	def getTripsByUser(user: User, loggedInUser: Option[User]): List[Trip] = {
+		loggedInUser match {
 			case None => throw new UserNotLoggedInException
 			case Some(loggedInUser) => findTripsFor(user, loggedInUser)
 		}
